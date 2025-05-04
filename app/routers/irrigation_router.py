@@ -1,11 +1,9 @@
-# irrigation_router.py: Endpoints for daily irrigation recommendations
 from fastapi import APIRouter, HTTPException
-from app.models import IrrigationRecommendation, Location  # Absolute import
-from app.services import weather_service  # Absolute import
+from app.models import IrrigationRecommendation
+from app.services import weather_service
 from datetime import date
-from typing import Optional
 
-router = APIRouter()
+router = APIRouter(prefix="/irrigation", tags=["Sulama"])
 
 @router.get("/{field_id}/recommendation", response_model=IrrigationRecommendation)
 async def get_irrigation_recommendation(
@@ -13,25 +11,29 @@ async def get_irrigation_recommendation(
     crop_name: str,
     latitude: float,
     longitude: float,
-    target_date: Optional[date] = None
+    target_date: date | None = None
 ):
-    """Get daily irrigation recommendation for a field"""
     try:
         if not target_date:
             target_date = date.today()
 
-        # Fetch weather data
         location = {"latitude": latitude, "longitude": longitude}
-        weather = await weather_service.get_weather_data(location, target_date)
+        forecast = await weather_service.get_weather_forecast(location)
 
-        # Mocked logic for irrigation
+        precipitation_expected = False
+        for day in forecast:
+            if "rain" in day["description"].lower() or day["precipitation"] > 2.0:
+                precipitation_expected = True
+                break
+
         water_amount = 5.0
-        recommendation = "Water normally"
-        if weather["precipitation"] > 2.0:
-            recommendation = "Do not water today"
+        recommendation = "Normal sulama"
+
+        if precipitation_expected:
+            recommendation = "Yağmur bekleniyor. Sulamaya gerek yok."
             water_amount = 0.0
-        elif weather["temperature"] > 30:
-            recommendation = "Increase watering due to high temperature"
+        elif forecast[0]["temperature"] > 30:
+            recommendation = "Sıcaklık yüksek. Su miktarını artır."
             water_amount *= 1.2
 
         return IrrigationRecommendation(
@@ -41,5 +43,6 @@ async def get_irrigation_recommendation(
             water_amount_liters=water_amount,
             recommendation=recommendation
         )
+
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching recommendation: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Sulama önerisi oluşturulurken hata oluştu: {str(e)}")
