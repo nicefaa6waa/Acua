@@ -96,8 +96,8 @@ Aşağıdaki Mermaid diyagramı, sistemin veri akışını ve API etkileşimleri
 
 ```mermaid
 graph TD
-    A[Kullanıcı web haritasında konum seçer] --> B[Ön yüz: Konumu lon, lat'e dönüştürür]
-    B --> C[Arka yüz: gemini_service.py]
+    A[Kullanıcı web haritasında konum seçer] --> B[Frontend: Konumu lon, lat'e dönüştürür]
+    B --> C[Backend: gemini_service.py]
     C --> D[soil_service.py]
     C --> E[maps_service.py]
     D --> F[SoilGrids API: Toprak verilerini alır]
@@ -110,7 +110,7 @@ graph TD
     J --> L
     K --> L
     L --> M[Gemini API 1.5 Pro: Ürün önerileri üretir]
-    M --> N[Ön yüze dönüş: crop_name, water_requirement, suitability_score]
+    M --> N[Frontende dönüş: crop_name, water_requirement, suitability_score]
     N --> O[Kullanıcı ürün ve tarih aralığı seçer]
     O --> P[irrigation_router.py]
     P --> Q[weather_service.py]
@@ -118,7 +118,7 @@ graph TD
     R --> S[Dönüş: tarih, saat, sıcaklık, yağış, nem]
     S --> T[irrigation_router.py: Ürün ve hava durumu verilerini Gemini API'ye gönderir]
     T --> U[Gemini API 1.5 Pro: Sulama programı üretir]
-    U --> V[Ön yüze dönüş: Sulama miktarları, saatler, hacim]
+    U --> V[Frontende dönüş: Sulama miktarları, saatler, hacim]
     V --> W[Son: Kullanıcı önerileri görür]
 ```
 
@@ -130,10 +130,10 @@ graph TD
 - **Gemini 1.5 Pro**: Toprak, tarla ve hava durumu verilerini analiz ederek ürün önerir ve sulamayı optimize eder.
 
 ## Katkıda Bulunma
-1. Depoyu forklayın.
-2. Özellik dalı oluşturun: `git checkout -b özellik-ismi`.
+1. Repoyu forklayın.
+2. Özellik branci oluşturun: `git checkout -b özellik-ismi`.
 3. Değişiklikleri kaydedin: `git commit -m "Özellik eklendi"`.
-4. Dalı itin: `git push origin özellik-ismi`.
+4. Branchi pushlayın: `git push origin özellik-ismi`.
 5. Bir pull request açın.
 
 ## Lisans
