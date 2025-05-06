@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
-# Debug: Print .env file path and loaded settings
-print(f"Looking for .env file at: {os.path.abspath('.env')}")
+
+# Initialize settings object after the class definition
 settings = Settings()
-print(f"Loaded settings: {settings.dict()}")
+

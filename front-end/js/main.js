@@ -61,10 +61,28 @@
 
 
     // Facts counter
-    $('[data-toggle="counter-up"]').counterUp({
-        delay: 5,
-        time: 2000
+// Enhanced Facts Counter
+$('[data-toggle="counter-up"]').each(function () {
+    const $this = $(this);
+    const fullText = $this.text().trim();
+
+    const match = fullText.match(/^(\d+)(.*)$/);
+    if (!match) return;
+
+    const rawNumber = parseInt(match[1].replace(/\D/g, '')); // just digits
+    const unit = match[2].trim();
+
+    $this.prop('Counter', 0).animate({
+        Counter: rawNumber
+    }, {
+        duration: 2000,
+        easing: 'swing',
+        step: function (now) {
+            const formatted = Math.floor(now).toLocaleString('tr-TR');
+            $this.text(formatted + (unit ? ' ' + unit : ''));
+        }
     });
+});
 
 
    // Back to top button
