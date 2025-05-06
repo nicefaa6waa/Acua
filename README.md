@@ -140,10 +140,8 @@ graph TD
 [MIT License](LICENSE) (or specify your license).
 
 ## Contact
-- **Maintainer**: [Your Name]
-- **Email**: [Your Email]
-- **GitHub**: [Your GitHub Username]
-- **DeepWiki**: [https://deepwiki.ai/username/Sustainability](https://deepwiki.ai/username/Sustainability) (interactive documentation)
+- **Maintainer**: Ibrahim
+- **Email**: mammadli0088@outlook.com
 
 ## Acknowledgments
 - Built with inspiration to address Turkey’s water recession crisis.
