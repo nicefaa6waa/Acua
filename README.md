@@ -1,148 +1,148 @@
-# Sustainable Agriculture Platform
+# Sürdürülebilir Tarım Platformu
 
-A web application to combat water recession in Turkey by optimizing crop selection and irrigation using AI and geospatial APIs. The platform reduces agricultural water waste (responsible for ~70% of Turkey’s water recession), lowers CO2 emissions, and boosts crop yields, contributing to economic growth.
+Türkiye’de su kıtlığına karşı tarımda su israfını azaltmak, CO2 emisyonlarını düşürmek ve mahsul verimini artırmak için yapay zeka ve coğrafi API’ler kullanarak ürün seçimi ve sulama optimizasyonu yapan bir web uygulaması. Platform, tarımın neden olduğu su kıtlığının yaklaşık %70’ini ele alarak ekonomik büyümeye katkıda bulunur.
 
-## Features
-- **Crop Recommendations**: Suggests optimal crops based on soil data (SoilGrids API) and field location, powered by Gemini 1.5 Pro.
-- **Field Area Calculation**: Determines farm area using OpenStreetMap (Overpass API) and Google Maps Geocoding API.
-- **Irrigation Optimization**: Provides precise irrigation schedules using weather forecasts (Open-Meteo API) and AI analysis (Gemini 1.5 Pro).
-- **Sustainability**: Decreases water and energy use, addressing environmental and economic challenges in Turkish agriculture.
+## Özellikler
+- **Ürün Önerileri**: SoilGrids API’sinden alınan toprak verilerine ve tarla konumuna dayalı olarak Gemini 1.5 Pro tarafından desteklenen en uygun ürünleri önerir.
+- **Tarla Alanı Hesaplama**: OpenStreetMap (Overpass API) ve Google Maps Geocoding API kullanarak tarla alanını belirler.
+- **Sulama Optimizasyonu**: Open-Meteo API ile hava durumu tahminlerini ve Gemini 1.5 Pro ile yapay zeka analizini kullanarak hassas sulama programları sağlar.
+- **Sürdürülebilirlik**: Su ve enerji kullanımını azaltarak Türkiye’deki çevresel ve ekonomik zorlukları ele alır.
 
-## Project Structure
+## Proje Yapısı
 ```
 Sustainability/
-├── .env                    # Environment variables (API keys)
-├── requirements.txt        # Python dependencies
+├── .env                    # Çevresel değişkenler (API anahtarları)
+├── requirements.txt        # Python bağımlılıkları
 └── app/
-    ├── config.py           # Loads .env using pydantic-settings
-    ├── __init__.py         # Marks app/ as a Python package
-    ├── main.py             # FastAPI application entry point
-    ├── models.py           # Data models (e.g., Pydantic schemas)
-    ├── routers/            # API endpoints
-    │   ├── field_router.py     # Handles field-related requests
-    │   ├── __init__.py         # Marks routers/ as a package
-    │   ├── irrigation_router.py # Handles irrigation schedule requests
-    └── services/           # API integrations and logic
-        ├── gemini_service.py   # Orchestrates soil, field, and crop recommendation logic
-        ├── maps_service.py     # Calculates field area (OpenStreetMap, Google Maps)
-        ├── soil_service.py     # Fetches soil data (SoilGrids API)
-        ├── weather_service.py  # Fetches weather forecasts (Open-Meteo API)
-        ├── test_maps_service.py # Tests maps_service.py
-        ├── test_soil_service.py # Tests soil_service.py
-        ├── __init__.py         # Marks services/ as a package
-        └── __pycache__/        # Compiled Python files
+    ├── config.py           # pydantic-settings ile .env dosyasını yükler
+    ├── __init__.py         # app/ dizinini Python paketi olarak işaretler
+    ├── main.py             # FastAPI uygulamasının giriş noktası
+    ├── models.py           # Veri modelleri (ör. Pydantic şemaları)
+    ├── routers/            # API uç noktaları
+    │   ├── field_router.py     # Tarla ile ilgili talepleri işler
+    │   ├── __init__.py         # routers/ dizinini paket olarak işaretler
+    │   ├── irrigation_router.py # Sulama programı taleplerini işler
+    └── services/           # API entegrasyonları ve mantık
+        ├── gemini_service.py   # Toprak, tarla ve ürün önerisi mantığını koordine eder
+        ├── maps_service.py     # Tarla alanını hesaplar (OpenStreetMap, Google Maps)
+        ├── soil_service.py     # Toprak verilerini alır (SoilGrids API)
+        ├── weather_service.py  # Hava durumu tahminlerini alır (Open-Meteo API)
+        ├── test_maps_service.py # maps_service.py’yi test eder
+        ├── test_soil_service.py # soil_service.py’yi test eder
+        ├── __init__.py         # services/ dizinini paket olarak işaretler
+        └── __pycache__/        # Derlenmiş Python dosyaları
 ```
 
-## Technologies
+## Teknolojiler
 - **Backend**: Python, FastAPI
-- **APIs**:
-  - SoilGrids (soil data)
-  - OpenStreetMap Overpass API (farmland polygons)
-  - Google Maps Geocoding API (address formatting)
-  - Open-Meteo API (weather forecasts)
-  - Gemini 1.5 Pro (crop recommendations, irrigation optimization)
-- **Libraries**: `aiohttp`, `shapely`, `pyproj`,`fastapi`,`pydantic`,`python-dotenv`,`googlegenerativeai`
-- **Database**: SQLite (default, configurable via `config.py`)
+- **API’ler**:
+  - SoilGrids (toprak verileri)
+  - OpenStreetMap Overpass API (tarla poligonları)
+  - Google Maps Geocoding API (adres formatlama)
+  - Open-Meteo API (hava durumu tahminleri)
+  - Gemini 1.5 Pro (ürün önerileri, sulama optimizasyonu)
+- **Kütüphaneler**: `aiohttp`, `shapely`, `pyproj`, `fastapi`, `pydantic`, `python-dotenv`, `googlegenerativeai`
+- **Veritabanı**: SQLite (varsayılan, config.py ile yapılandırılabilir)
 
-## Setup
-1. **Clone the Repository**:
+## Kurulum
+1. **Depoyu Klonlayın**:
    ```bash
    git clone https://github.com/username/Sustainability
    cd Sustainability
    ```
-2. **Create a Virtual Environment**:
+2. **Sanal Ortam Oluşturun**:
    ```bash
    python3 -m venv venv
    source venv/bin/activate
    ```
-3. **Install Dependencies**:
+3. **Bağımlılıkları Yükleyin**:
    ```bash
    pip install -r requirements.txt
    ```
-4. **Configure Environment Variables**:
-   - Create a `.env` file in the root directory:
+4. **Çevresel Değişkenleri Yapılandırın**:
+   - Kök dizinde bir `.env` dosyası oluşturun:
      ```bash
      touch .env
      ```
-   - Add the following (replace with your API keys):
+   - Aşağıdakileri ekleyin (API anahtarlarınızı ekleyin):
      ```
      GOOGLE_MAPS_API_KEY=your_google_maps_key
      GEMINI_API_KEY=your_gemini_key
      DATABASE_URL=sqlite:///./agriculture.db
      ```
-   - Note: Open-Meteo and SoilGrids APIs are keyless. `OPENWEATHER_API_KEY` may be unused if `weather_service.py` uses Open-Meteo.
-5. **Run the Application**:
+   - Not: Open-Meteo ve SoilGrids API’leri anahtar gerektirmez. `OPENWEATHER_API_KEY` eğer `weather_service.py` Open-Meteo kullanıyorsa kullanılmayabilir.
+5. **Uygulamayı Çalıştırın**:
    ```bash
    python3 app/main.py
    ```
-   - Access the API at `http://localhost:8000` (default FastAPI port).
+   - API’ye varsayılan FastAPI portu üzerinden erişin: `http://localhost:8000`
 
-## Usage
-1. **Select a Location**:
-   - Use the web interface to pick a farm location on a map, which converts to longitude and latitude (`lon`, `lat`).
-2. **Get Crop Recommendations**:
-   - The app fetches soil data (`soil_service.py`) and field area (`maps_service.py`).
-   - `gemini_service.py` uses Gemini 1.5 Pro to recommend crops:
+## Kullanım
+1. **Konum Seçimi**:
+   - Web arayüzünde bir tarla konumu seçin; bu, enlem ve boylam (`lon`, `lat`) olarak dönüştürülür.
+2. **Ürün Önerileri Alın**:
+   - Uygulama, toprak verilerini (`soil_service.py`) ve tarla alanını (`maps_service.py`) alır.
+   - `gemini_service.py`, Gemini 1.5 Pro kullanarak ürünleri önerir:
      - `crop_name`
      - `water_requirement_liters_per_sqm`
      - `suitability_score`
-3. **Plan Irrigation**:
-   - Choose a crop and date range via `irrigation_router.py`.
-   - `weather_service.py` provides weather data (temperature, precipitation, humidity).
-   - Gemini 1.5 Pro generates an optimal irrigation schedule (hours, water amounts).
+3. **Sulama Planlaması**:
+   - `irrigation_router.py` üzerinden bir ürün ve tarih aralığı seçin.
+   - `weather_service.py`, hava durumu verilerini (sıcaklık, yağış, nem) sağlar.
+   - Gemini 1.5 Pro, optimal sulama programı (saatler, su miktarı) oluşturur.
 
-## Workflow
-The following Mermaid diagram illustrates the system’s data flow and API interactions:
+## İş Akışı
+Aşağıdaki Mermaid diyagramı, sistemin veri akışını ve API etkileşimlerini gösterir:
 
 ```mermaid
 graph TD
-    A[User selects location on web map] --> B[Frontend: Converts to lon, lat]
-    B --> C[Backend: gemini_service.py]
+    A[Kullanıcı web haritasında konum seçer] --> B[Ön yüz: Konumu lon, lat'e dönüştürür]
+    B --> C[Arka yüz: gemini_service.py]
     C --> D[soil_service.py]
     C --> E[maps_service.py]
-    D --> F[SoilGrids API: Fetch soil data]
-    E --> G[OpenStreetMap Overpass API: Fetch farmland polygons]
-    E --> H[Google Maps Geocoding API: Fetch address]
-    F --> I[Return: fertility, pH, organic_content, nitrogen_content, moisture_level]
-    G --> J[Calculate area_sqm using shapely/pyproj]
-    H --> K[Return: field_id, area_sqm, address]
-    I --> L[gemini_service.py: Combine soil and field data]
+    D --> F[SoilGrids API: Toprak verilerini alır]
+    E --> G[OpenStreetMap Overpass API: Tarla poligonlarını alır]
+    E --> H[Google Maps Geocoding API: Adresi alır]
+    F --> I[Dönüş: bereket, pH, organik içerik, azot içeriği, nem seviyesi]
+    G --> J[shapely/pyproj ile area_sqm hesaplar]
+    H --> K[Dönüş: field_id, area_sqm, adres]
+    I --> L[gemini_service.py: Toprak ve tarla verilerini birleştirir]
     J --> L
     K --> L
-    L --> M[Gemini API 1.5 Pro: Generate crop recommendations]
-    M --> N[Return to Frontend: crop_name, water_requirement, suitability_score]
-    N --> O[User selects crop and date range]
+    L --> M[Gemini API 1.5 Pro: Ürün önerileri üretir]
+    M --> N[Ön yüze dönüş: crop_name, water_requirement, suitability_score]
+    N --> O[Kullanıcı ürün ve tarih aralığı seçer]
     O --> P[irrigation_router.py]
     P --> Q[weather_service.py]
-    Q --> R[Open-Meteo API: Fetch weather data]
-    R --> S[Return: date, hour, temperature, precipitation, humidity]
-    S --> T[irrigation_router.py: Send crop, weather to Gemini API]
-    T --> U[Gemini API 1.5 Pro: Generate irrigation schedule]
-    U --> V[Return to Frontend: Irrigation amounts, hours, volume]
-    V --> W[End: User views recommendations]
+    Q --> R[Open-Meteo API: Hava durumu verilerini alır]
+    R --> S[Dönüş: tarih, saat, sıcaklık, yağış, nem]
+    S --> T[irrigation_router.py: Ürün ve hava durumu verilerini Gemini API'ye gönderir]
+    T --> U[Gemini API 1.5 Pro: Sulama programı üretir]
+    U --> V[Ön yüze dönüş: Sulama miktarları, saatler, hacim]
+    V --> W[Son: Kullanıcı önerileri görür]
 ```
 
-## API Integrations
-- **SoilGrids**: Provides soil properties (fertility, pH, etc.) for crop suitability.
-- **OpenStreetMap (Overpass API)**: Fetches farmland polygons to calculate field area; falls back to 100m radius estimation.
-- **Google Maps Geocoding**: Converts `lon`, `lat` to a human-readable address.
-- **Open-Meteo**: Delivers weather forecasts (temperature, precipitation, humidity) for 3 hours daily.
-- **Gemini 1.5 Pro**: Analyzes soil, field, and weather data to recommend crops and optimize irrigation.
+## API Entegrasyonları
+- **SoilGrids**: Ürün uygunluğu için toprak özelliklerini (bereket, pH, vb.) sağlar.
+- **OpenStreetMap (Overpass API)**: Tarla alanını hesaplamak için poligonları alır; veri yoksa 100m yarıçap tahmini kullanır.
+- **Google Maps Geocoding**: `lon`, `lat`’ı okunabilir bir adrese dönüştürür.
+- **Open-Meteo**: Günlük 3 saatlik hava durumu tahminleri (sıcaklık, yağış, nem) sunar.
+- **Gemini 1.5 Pro**: Toprak, tarla ve hava durumu verilerini analiz ederek ürün önerir ve sulamayı optimize eder.
 
-## Contributing
-1. Fork the repository.
-2. Create a feature branch: `git checkout -b feature-name`.
-3. Commit changes: `git commit -m "Add feature"`.
-4. Push to the branch: `git push origin feature-name`.
-5. Open a pull request.
+## Katkıda Bulunma
+1. Depoyu forklayın.
+2. Özellik dalı oluşturun: `git checkout -b özellik-ismi`.
+3. Değişiklikleri kaydedin: `git commit -m "Özellik eklendi"`.
+4. Dalı itin: `git push origin özellik-ismi`.
+5. Bir pull request açın.
 
-## License
-[MIT License](LICENSE) (or specify your license).
+## Lisans
+[MIT Lisansı](LICENSE).
 
-## Contact
-- **Maintainer**: Ibrahim
-- **Email**: mammadli0088@outlook.com
+## İletişim
+- **Developer**: İbrahim
+- **E-posta**: mammadli0088@outlook.com
 
-## Acknowledgments
-- Built with inspiration to address Turkey’s water recession crisis.
-- Thanks to open-source APIs (SoilGrids, OpenStreetMap, Open-Meteo) and Gemini AI.
+## Teşekkürler
+- Türkiye’nin su kıtlığı krizini çözme ilhamıyla geliştirildi.
+- SoilGrids, OpenStreetMap, Open-Meteo ve Gemini AI gibi açık kaynaklı API’lere teşekkürler.
