@@ -41,7 +41,7 @@ Sustainability/
   - Google Maps Geocoding API (address formatting)
   - Open-Meteo API (weather forecasts)
   - Gemini 1.5 Pro (crop recommendations, irrigation optimization)
-- **Libraries**: `aiohttp`, `shapely`, `pyproj`, `pydantic-settings`
+- **Libraries**: `aiohttp`, `shapely`, `pyproj`,`fastapi`,`pydantic`,`python-dotenv`,`googlegenerativeai`
 - **Database**: SQLite (default, configurable via `config.py`)
 
 ## Setup
