@@ -1,7 +1,6 @@
-# field_router.py: Endpoints for field selection and crop recommendations
 from fastapi import APIRouter, HTTPException
-from app.models import FieldRequest, FieldResponse, Location  # Absolute import
-from app.services import maps_service, soil_service, gemini_service  # Absolute import
+from app.models import FieldRequest, FieldResponse, Location
+from app.services import gemini_service
 
 router = APIRouter()
 
@@ -9,22 +8,21 @@ router = APIRouter()
 async def create_field(field_request: FieldRequest):
     """Create a new field and get crop recommendations"""
     try:
-        # Get field data (ID and area) from Google Maps API
-        field_data = await maps_service.get_field_data(field_request.location.dict())
-
-        # Get soil fertility data
-        soil_fertility = await soil_service.get_soil_fertility(field_request.location.dict())
-
-        # Get crop recommendations from Gemini API
-        recommended_crops = await gemini_service.get_crop_recommendations(
-            soil_data=soil_fertility,
-            area_sqm=field_data["area_sqm"]
+        # Get crop recommendations, soil fertility, and area from gemini_service
+        recommended_crops, soil_fertility, area_sqm = await gemini_service.get_crop_recommendations(
+            soil_data={},
+            latitude=field_request.location.latitude,
+            longitude=field_request.location.longitude
         )
 
+        # Check if an error was returned
+        if isinstance(recommended_crops, list) and "error" in recommended_crops[0]:
+            raise HTTPException(status_code=500, detail=recommended_crops[0]["error"])
+
         return FieldResponse(
-            field_id=field_data["field_id"],
+            field_id=None,  # Set to None as specified
             location=field_request.location,
-            area_sqm=field_data["area_sqm"],
+            area_sqm=area_sqm,
             soil_fertility=soil_fertility,
             recommended_crops=recommended_crops
         )

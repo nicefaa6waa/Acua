@@ -1,6 +1,6 @@
 # models.py: Pydantic models for request and response validation
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List, Optional, Dict
 from datetime import date
 
 class Location(BaseModel):
@@ -21,10 +21,10 @@ class CropRecommendation(BaseModel):
 
 class FieldResponse(BaseModel):
     """Response model for field details and recommendations"""
-    field_id: str
+    field_id: Optional[str]  # Allow None for field_id
     location: Location
     area_sqm: float
-    soil_fertility: dict
+    soil_fertility: Dict
     recommended_crops: List[CropRecommendation]
 
 class IrrigationRecommendation(BaseModel):
