@@ -899,4 +899,34 @@
 }
 /*** copyright end ***/
 
+.mermaid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 600px;
+    background-color: #E8F5E9; /* Low-hue green-white */
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 20px;
+    overflow-x: auto;
+}
 
+.image-box {
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+.image-box:hover {
+    transform: scale(1.05);
+}
+.image-box img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+.modal-content {
+    border-radius: 10px;
+}
+#popupImage {
+    max-height: 600px;
+    object-fit: cover;
+}

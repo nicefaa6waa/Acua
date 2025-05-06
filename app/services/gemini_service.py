@@ -69,7 +69,7 @@ async def get_crop_recommendations(soil_data: dict, latitude: float, longitude: 
             ...
         ]
 
-        Each suitability_score must be between 0 and 1. Ensure the response is valid JSON with exactly 5 entries.
+        Each suitability_score must be between 0 and 1. Ensure the response is valid JSON with exactly 5 entries. Use Turkish crop names (e.g., 'İnci Darı' instead of 'Pearl Millet')
         """
         
         response = await model.generate_content_async(prompt)

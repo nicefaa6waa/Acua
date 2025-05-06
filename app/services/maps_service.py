@@ -7,7 +7,7 @@ from shapely.geometry import Polygon, Point
 from shapely.ops import transform
 import pyproj
 
-async def get_field_data(location: dict, radius_m: float = 100) -> dict:
+async def get_field_data(location: dict, radius_m: float = 75) -> dict:
 
     latitude = location.get('latitude')
     longitude = location.get('longitude')

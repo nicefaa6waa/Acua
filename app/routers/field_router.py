@@ -1,30 +1,49 @@
 from fastapi import APIRouter, HTTPException
-from app.models import FieldRequest, FieldResponse, Location
-from app.services import gemini_service
+from app.models import FieldRequest, FieldResponse, CropRecommendation
+from app.services.gemini_weather_service import get_weather_water_recommendations
+import logging
 
 router = APIRouter()
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 @router.post("/", response_model=FieldResponse)
-async def create_field(field_request: FieldRequest):
-    """Create a new field and get crop recommendations"""
+async def create_field(request: FieldRequest):
+    """Create a field and return crop and irrigation recommendations"""
     try:
-        # Get crop recommendations, soil fertility, and area from gemini_service
-        recommended_crops, soil_fertility, area_sqm = await gemini_service.get_crop_recommendations(
-            soil_data={},
-            latitude=field_request.location.latitude,
-            longitude=field_request.location.longitude
+        latitude = request.location.latitude
+        longitude = request.location.longitude
+        user_id = request.user_id
+
+        # Mocked crop recommendations (replace with actual logic or AI service)
+        recommended_crops = [
+            CropRecommendation(crop_name="Buğday", water_requirement_liters_per_sqm=1.5, suitability_score=0.95),
+            CropRecommendation(crop_name="Mısır", water_requirement_liters_per_sqm=2.0, suitability_score=0.90),
+            CropRecommendation(crop_name="Ayçiçeği", water_requirement_liters_per_sqm=1.2, suitability_score=0.85),
+            CropRecommendation(crop_name="Pamuk", water_requirement_liters_per_sqm=1.8, suitability_score=0.80),
+            CropRecommendation(crop_name="Şeker Pancarı", water_requirement_liters_per_sqm=1.7, suitability_score=0.75),
+        ]
+
+        # Fetch weather and irrigation recommendations
+        weather_recommendations, area_sqm = await get_weather_water_recommendations(
+            crop_name=recommended_crops[0].crop_name,  # Use the first crop for weather data
+            lat=latitude,
+            lon=longitude
         )
 
-        # Check if an error was returned
-        if isinstance(recommended_crops, list) and "error" in recommended_crops[0]:
-            raise HTTPException(status_code=500, detail=recommended_crops[0]["error"])
+        if 'error' in weather_recommendations:
+            raise HTTPException(status_code=500, detail=weather_recommendations['error'])
+
+        logger.info(f"Field created for user {user_id} at ({latitude}, {longitude}): {len(recommended_crops)} crops, {len(weather_recommendations)} weather entries")
 
         return FieldResponse(
-            field_id=None,  # Set to None as specified
-            location=field_request.location,
+            user_id=user_id,
+            latitude=latitude,
+            longitude=longitude,
             area_sqm=area_sqm,
-            soil_fertility=soil_fertility,
-            recommended_crops=recommended_crops
+            recommended_crops=recommended_crops,
+            weather_recommendations=weather_recommendations
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error processing field: {str(e)}")
+        logger.error(f"Error creating field: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))

@@ -1,36 +1,32 @@
-# models.py: Pydantic models for request and response validation
-from pydantic import BaseModel, Field
-from typing import List, Optional, Dict
+from pydantic import BaseModel
+from typing import List, Optional
 from datetime import date
 
 class Location(BaseModel):
-    """Model for field location coordinates"""
-    latitude: float = Field(..., ge=-90, le=90)
-    longitude: float = Field(..., ge=-180, le=180)
+    latitude: float
+    longitude: float
+
+class CropRecommendation(BaseModel):
+    crop_name: str
+    water_requirement_liters_per_sqm: float
+    suitability_score: float
+
+class WeatherRecommendation(BaseModel):
+    date: str
+    hour: int
+    temperature: float
+    humidity: float
+    precipitation: float
+    recommended_water_liters_per_sqm: float
 
 class FieldRequest(BaseModel):
-    """Request model for field selection"""
     location: Location
     user_id: str
 
-class CropRecommendation(BaseModel):
-    """Model for crop recommendation from Gemini API"""
-    crop_name: str
-    water_requirement_liters_per_sqm: float
-    suitability_score: float = Field(..., ge=0, le=1)
-
 class FieldResponse(BaseModel):
-    """Response model for field details and recommendations"""
-    field_id: Optional[str]  # Allow None for field_id
-    location: Location
+    user_id: str
+    latitude: float
+    longitude: float
     area_sqm: float
-    soil_fertility: Dict
     recommended_crops: List[CropRecommendation]
-
-class IrrigationRecommendation(BaseModel):
-    """Model for daily irrigation recommendation"""
-    field_id: str
-    date: date
-    crop_name: str
-    water_amount_liters: float
-    recommendation: str
+    weather_recommendations: List[WeatherRecommendation]
